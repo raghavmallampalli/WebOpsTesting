@@ -11,15 +11,20 @@ h1 {
 	
 text-align:center;
 color:#2F4F4F;
-
+font-size: 50px;
 }
 
 p {
 
 color:#000000;
+font-size: 20px;
 
 }
 
+a {
+font-size: 30px;
+  
+  }
 .bio_data {
 color:#8B0000;
 }
