@@ -1,0 +1,39 @@
+
+
+body {
+
+margin:30px;
+background-color:#A9A9A9;
+
+}
+
+h1 {
+	
+text-align:center;
+color:#2F4F4F;
+
+}
+
+p {
+
+color:#000000;
+
+}
+
+.bio_data {
+color:#8B0000;
+}
+
+img {
+
+align:center;
+
+}
+	
+.centeredimage {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  height= auto;
+}
