@@ -1,23 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <script type="module">
-		import * as THREE from '/node_modules/three/build/three.module.js';
-        import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader';
-        var loader = new THREE.GLTFLoader();
-        
-        loader.load( '../models/simple_dora.glb', function ( gltf ) {
-            scene.add( gltf.scene );
-        }, undefined, function ( error ) {
-            console.error( error );
-        } );
-        
-    </script>
-</body>
+	<head>
+		<title>STL implementation of three.js</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	</head>
+	<body>
+		<script type="module">
+			import * as THREE from '/node_modules/three/build/three.module.js';
+			import Stats from '/node_modules/three/examples/jsm/libs/stats.module.js';
+			import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+			main() {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                this.renderer = new THREE.WebGLRenderer();
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+                //This model is NOT rendered or it is invisible somehow...
+                const gltfLoader = new GLTFLoader();
+                const url = '/models/simple_dora.glb';
+                gltfLoader.load(url, (gltf) => {
+                    this.scene.add(gltf.scene);
+                    this.renderer.render(this.scene, this.camera);
+                });        
+
+                this.camera.position.x = 0;
+                this.camera.position.y = 0;
+                this.camera.position.z = 5;
+
+                const controls = new OrbitControls(this.camera, this.renderer.domElement);
+                // How far you can orbit vertically, upper and lower limits.
+                controls.minPolarAngle = 0;
+                controls.maxPolarAngle = Math.PI;
+                // How far you can dolly in and out ( PerspectiveCamera only )
+                controls.minDistance = 0;
+                controls.maxDistance = Infinity;
+                // controls.enableZoom = true; // Set to false to disable zooming
+                // controls.zoomSpeed = 1.0;
+                controls.enablePan = true; // Set to false to disable panning (ie vertical and horizontal translations)
+                controls.enableDamping = true; // Set to false to disable damping (ie inertia)
+                controls.dampingFactor = 0.25;
+
+                this.animate = this.animate.bind(this);
+                this.animate();
+                }
+		</script>
+	</body>
 </html>

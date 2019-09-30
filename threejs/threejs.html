@@ -1,97 +1,100 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 	<head>
-		<title>My first three.js app</title>
-		<link rel="stylesheet" href="css/white.css">
-		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
-		</style>
+		<title>three.js</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	</head>
 	<body>
-		<script src="/node_modules/three/build/three.js"></script>
-		<script src="/node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
-
-		<script>
-			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-
-			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
-
-			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-			var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-			var material2 = new THREE.MeshBasicMaterial( { color: 0x00d9ff } );
-			var cube = new THREE.Mesh( geometry, material );
-			var cube2 = new THREE.Mesh( geometry, material2 );
-			scene.add( cube );
-			//scene.add( cube2 );
-			/*
-			var loader = new THREE.GLTFLoader();
-			loader.load( '/simple_dora.glb', function ( gltf ) {
-
-				scene.add( gltf.scene );
-
-			}, undefined, function ( error ) {
-
-				console.error( error );
-
-			} );
-			*/
-
-			var loader = new THREE.GLTFLoader();
-
-			// Optional: Provide a DRACOLoader instance to decode compressed mesh data
-			//var dracoLoader = new THREE.DRACOLoader();
-			//dracoLoader.setDecoderPath( '/examples/js/libs/draco' );
-			//loader.setDRACOLoader( dracoLoader );
-
-			// Load a glTF resource
-			loader.load(
-				// resource URL
-				'/models/simple_dora.glb',
-				// called when the resource is loaded
-				function ( gltf ) {
-
-					scene.add( gltf.scene );
-
-					gltf.animations; // Array<THREE.AnimationClip>
-					gltf.scene; // THREE.Scene
-					gltf.scenes; // Array<THREE.Scene>
-					gltf.cameras; // Array<THREE.Camera>
-					gltf.asset; // Object
-
-				},
-				// called while loading is progressing
-				function ( xhr ) {
-
-					console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-				},
-				// called when loading has errors
-				function ( error ) {
-
-					console.log( 'An error happened' );
-
-				}
-			);
-			//scene.add(dora.gltf.scene)
-
-			camera.position.z = 5;
-			var animate = function () {
-				requestAnimationFrame( animate );
-
-				cube.rotation.x += 0.01;
-				cube.rotation.y += 0.01;
-				cube.rotation.z += 0.01;
-
-				renderer.render( scene, camera );
-			};
-											
+		<script type="module">
+			import * as THREE from '/node_modules/three/build/three.module.js';
+			import Stats from '/node_modules/three/examples/jsm/libs/stats.module.js';
+			import { STLLoader } from '/node_modules/three/examples/jsm/loaders/STLLoader.js';
+			var container, stats;
+			var camera, cameraTarget, scene, renderer;
+			init();
 			animate();
+			function init() {
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				
+				camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 15 );
+				camera.position.set( 3, 0.15, 3 );
+				cameraTarget = new THREE.Vector3( 0, - 0.25, 0 );
+				
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xfd6832 );
+				scene.fog = new THREE.Fog( 0xAAAAAA, 2, 15 );
+				
+				// Ground
+				/*
+				var plane = new THREE.Mesh(
+					new THREE.PlaneBufferGeometry( 40, 40 ),
+					new THREE.MeshPhongMaterial( { color: 0xAAAAAA, specular: 0x2f4f4f } )
+				);
+				plane.rotation.x = - Math.PI / 2;
+				plane.position.y = - 0.5;
+				scene.add( plane );
+				plane.receiveShadow = true;
+				*/
+                var loader = new STLLoader();
+                
+				// Inserting file (pre-colored mode)
+				
+				loader.load( '/models/simple_dora.stl', function ( geometry ) {
+					var meshMaterial = material;
+					if ( geometry.hasColors ) {
+						meshMaterial = new THREE.MeshPhongMaterial( { opacity: geometry.alpha, vertexColors: THREE.VertexColors } );
+					}
+					var mesh = new THREE.Mesh( geometry, meshMaterial );
+					mesh.position.set( 0, 0, 0 );
+					mesh.rotation.set( - Math.PI / 2, 0 , 0 );
+					mesh.scale.set(1000,1000,1000 );
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
+					scene.add( mesh );
+				} );
+
+				//light
+				var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+				scene.add( ambientLight );
+				var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
+				camera.add( pointLight );
+				scene.add( camera )
+
+				// renderer
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.gammaInput = true;
+				renderer.gammaOutput = true;
+				renderer.shadowMap.enabled = true;
+				container.appendChild( renderer.domElement );
+				// stats
+				stats = new Stats();
+				container.appendChild( stats.dom );
+				//
+				window.addEventListener( 'resize', onWindowResize, false );
+			}
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+				stats.update();
+			}
+			function render() {
+				//var timer = Date.now() * 0.0005;
+				//camera.position.x = Math.cos( timer ) * 3;
+				//camera.position.z = Math.sin( timer ) * 3;
+				camera.position.x = 3;
+				camera.position.z = 0;
+				camera.lookAt( cameraTarget );
+				renderer.render( scene, camera );
+			}
 		</script>
 	</body>
-	<p>Test text</p>
 </html>
