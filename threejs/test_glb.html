@@ -1,0 +1,45 @@
+main() {
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+    //this blue cube is rendered, very nice!!!
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+    this.cube = new THREE.Mesh(geometry, material);
+    this.scene.add(this.cube);
+
+    //This model is NOT rendered or it is invisible somehow...
+    const gltfLoader = new GLTFLoader();
+    const url = '/Models/cartoon_lowpoly_small_city_free_pack/scene.gltf';
+    gltfLoader.load(url, (gltf) => {
+        this.scene.add(gltf.scene);
+        this.renderer.render(this.scene, this.camera);
+    });        
+
+    this.camera.position.x = 0;
+    this.camera.position.y = 0;
+    this.camera.position.z = 5;
+
+    const controls = new OrbitControls(this.camera, this.renderer.domElement);
+    // How far you can orbit vertically, upper and lower limits.
+    controls.minPolarAngle = 0;
+    controls.maxPolarAngle = Math.PI;
+    // How far you can dolly in and out ( PerspectiveCamera only )
+    controls.minDistance = 0;
+    controls.maxDistance = Infinity;
+    // controls.enableZoom = true; // Set to false to disable zooming
+    // controls.zoomSpeed = 1.0;
+    controls.enablePan = true; // Set to false to disable panning (ie vertical and horizontal translations)
+    controls.enableDamping = true; // Set to false to disable damping (ie inertia)
+    controls.dampingFactor = 0.25;
+
+    this.animate = this.animate.bind(this);
+    this.animate();
+}
+
+animate() {
+    requestAnimationFrame(this.animate);
+    this.renderer.render(this.scene, this.camera);
+}
