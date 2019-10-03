@@ -7,32 +7,51 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <link rel="stylesheet" href="bootstrap.min.css">
         <title>Bootstrap testing</title>
+        <style>
+            img {
+                width:100%;
+            }
+            .container {
+                max-width: 80%;
+            }
+        </style>
     </head>
-    <style>
-        img {
-            width=100%;
-        }
-    </style>
+    
     <body>
         <div class="container">
             <h1 class="text-sm-center" id="start">
                 Hello world!
             </h1>
+            <!-- Grid sample
             <div class="row">
-                <div class="col">
-                    <img src="/assets/gear.png" alt="gear">
+                <div class="col-4  text-justify">
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos suscipit nulla, ex ipsam ea, dolore repudiandae corrupti harum earum rerum facilis perferendis distinctio saepe officia quasi! Alias, architecto. Consectetur, incidunt?</p>
+                </div>
+                <div class="col-4">
+                    <figure class="figure">
+                        <img src="/assets/gear.png" alt="gear" class="img">
+                    </figure>
                 </div>
                 <div class="col">
-                    <img src="/assets/gear.png" alt="gear">
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos suscipit nulla, ex ipsam ea, dolore repudiandae corrupti harum earum rerum facilis perferendis distinctio saepe officia quasi! Alias, architecto. Consectetur, incidunt?Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos suscipit nulla, ex ipsam ea, dolore repudiandae corrupti harum earum rerum facilis perferendis distinctio saepe officia quasi! Alias, architecto. Consectetur, incidunt?</p>
                 </div>
                 <div class="col">
-                    <img src="/assets/gear.png" alt="gear">
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos suscipit nulla, ex ipsam ea, dolore repudiandae corrupti harum earum rerum facilis perferendis distinctio saepe officia quasi! Alias, architecto. Consectetur, incidunt?</p>
                 </div>
                 <div class="col">
-                    <img src="/assets/gear.png" alt="gear">
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos suscipit nulla, ex ipsam ea, dolore repudiandae corrupti harum earum rerum facilis perferendis distinctio saepe officia quasi! Alias, architecto. Consectetur, incidunt?</p>
                 </div>
-                
+                <div class="col">
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos suscipit nulla, ex ipsam ea, dolore repudiandae corrupti harum earum rerum facilis perferendis distinctio saepe officia quasi! Alias, architecto. Consectetur, incidunt?</p>
+                </div>
+                <div class="col">
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos suscipit nulla, ex ipsam ea, dolore repudiandae corrupti harum earum rerum facilis perferendis distinctio saepe officia quasi! Alias, architecto. Consectetur, incidunt?</p>
+                </div>
+                <div class="col">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis veritatis id aliquid tempora expedita adipisci culpa, recusandae quisquam accusamus aliquam sunt, tempore commodi cupiditate consectetur molestiae laboriosam provident, eligendi nulla.
+                </div>
             </div>
+            -->
         </div>
         <script src="jquery.slim.min.js"></script>
         <script src="popper.min.js"></script>
@@ -44,8 +63,33 @@
     navbar, horizontal, visible on scroll
     see mockup on WhatsApp
     grid: row, col-sm-2
+        grid alignment: align for vertical, justify for horizontal. works for flexbox also.
+        use align/justify self for individual elts
     img-thumbnail for team member pics and sponsors
     fig?
     text-sm-left?
-    
+    navbar:
+        size might be a problem in android
+        d-none d-sm-visible for logo
+    dropdowns:
+        a) dropdown  menu
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="exampledropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown button
+            </button>
+            <div class="dropdown-menu" aria-labelledby="exampledropdownMenuButton">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </div>
+        b) collapsing section
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myTarget" aria-controls="myTogglerNav" aria-expanded="false" aria-label="Toggle navigation">
+        </button>
+        <div class="collapse navbar-collapse" id="myTogglerNav">
+            <div class="navbar-nav">
+                items
+            </div>
+        </div>
+
 -->
